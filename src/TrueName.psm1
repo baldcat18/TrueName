@@ -67,7 +67,7 @@ function Get-TrueName {
 
 				# Windows Virtual Drive
 				if ($_.Drive) {
-					$drive = "$($_.Drive.Name):"
+					$drive = [Path]::GetPathRoot($providerPath) -replace '(/|\\)$'
 					if ($driveRoot.ContainsKey($drive)) {
 						return Get-TrueName -LiteralPath $providerPath.Replace($drive, $driveRoot[$drive])
 					}
@@ -118,3 +118,5 @@ function isSoftlink {
 		Default { return $false }
 	}
 }
+
+New-Alias Get-RealPath Get-TrueName
